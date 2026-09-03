@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/Input";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { Button } from "@/components/ui/Button";
 import { FirebaseNotConfiguredNotice } from "@/components/features/auth/FirebaseNotConfiguredNotice";
+import { GoogleSignInButton } from "@/components/features/auth/GoogleSignInButton";
 import { registerSchema, type RegisterValues } from "@/lib/validation/auth";
 import { registerWithEmail } from "@/lib/firebase/auth";
 import { getAuthErrorMessage } from "@/lib/firebase/authErrors";
@@ -88,6 +89,16 @@ export default function RegisterPage() {
           Crear cuenta
         </Button>
       </form>
+
+      <div className="mt-5 flex items-center gap-3">
+        <div className="h-px flex-1 bg-border" />
+        <span className="font-sans text-xs text-text-dim">o</span>
+        <div className="h-px flex-1 bg-border" />
+      </div>
+
+      <div className="mt-4">
+        <GoogleSignInButton />
+      </div>
 
       <p className="mt-6 text-center font-sans text-sm text-text-dim">
         ¿Ya tienes cuenta?{" "}

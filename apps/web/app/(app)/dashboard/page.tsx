@@ -1,19 +1,55 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useAuthUser } from "@/lib/firebase/useAuthUser";
 import { useUserProfile } from "@/lib/firebase/userProfile";
+import { callAiTextTool, FunctionsCallError, type TextToolAction } from "@/lib/firebase/functions";
+import { logHistoryEntry } from "@/lib/firebase/history";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Spinner } from "@/components/ui/Spinner";
 import { TOOL_NAV_ITEMS } from "@/lib/navigation";
+import { PLAN_LABEL } from "@/lib/plans";
 
-const PLAN_LABEL: Record<string, string> = { free: "Free", pro: "Pro", premium: "Premium" };
+const SUMMARIZER_ACTIONS: { action: TextToolAction; label: string; historyTitle: string }[] = [
+  { action: "resumir", label: "Resumir", historyTitle: "Resumen generado" },
+  { action: "explicar", label: "Explicar fácil", historyTitle: "Explicación generada" },
+  { action: "preguntas", label: "Generar preguntas", historyTitle: "Preguntas de repaso generadas" },
+  { action: "examen", label: "Crear examen", historyTitle: "Examen generado" },
+];
 
 export default function DashboardPage() {
   const { user } = useAuthUser();
   const { profile, loading: profileLoading, error: profileError } = useUserProfile(user?.uid);
   const firstName = user?.displayName?.split(" ")[0];
+
+  const [summarizerText, setSummarizerText] = useState("");
+  const [summarizerResult, setSummarizerResult] = useState<string | null>(null);
+  const [summarizerError, setSummarizerError] = useState<string | null>(null);
+  const [runningAction, setRunningAction] = useState<TextToolAction | null>(null);
+
+  async function handleSummarizerAction(action: TextToolAction, historyTitle: string) {
+    if (!summarizerText.trim() || !user) return;
+    setRunningAction(action);
+    setSummarizerError(null);
+    setSummarizerResult(null);
+    try {
+      const result = await callAiTextTool({ action, text: summarizerText.trim() });
+      setSummarizerResult(result);
+      await logHistoryEntry(user.uid, {
+        type: "resumen",
+        title: historyTitle,
+        detail: result.slice(0, 300),
+      });
+    } catch (error) {
+      setSummarizerError(
+        error instanceof FunctionsCallError ? error.message : "Ha ocurrido un problema. Inténtalo de nuevo."
+      );
+    } finally {
+      setRunningAction(null);
+    }
+  }
 
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-10">
@@ -32,27 +68,35 @@ export default function DashboardPage() {
           </p>
           <textarea
             rows={6}
+            value={summarizerText}
+            onChange={(e) => setSummarizerText(e.target.value)}
             placeholder="Pega aquí tu texto de estudio…"
             className="mt-4 w-full resize-none rounded-[var(--radius-md)] border border-border bg-surface-2 p-3.5 font-sans text-[15px] text-text placeholder:text-text-dim focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-text"
           />
-          <p className="mt-3 rounded-[var(--radius-md)] border border-warning/40 bg-warning/10 px-3.5 py-3 font-sans text-sm text-text">
-            Esta herramienta necesita Gemini conectado en el backend (Fase 18)
-            — todavía no está activa.
-          </p>
           <div className="mt-4 flex flex-wrap gap-2">
-            <Button disabled variant="secondary" size="sm">
-              Resumir
-            </Button>
-            <Button disabled variant="secondary" size="sm">
-              Explicar fácil
-            </Button>
-            <Button disabled variant="secondary" size="sm">
-              Generar preguntas
-            </Button>
-            <Button disabled variant="secondary" size="sm">
-              Crear examen
-            </Button>
+            {SUMMARIZER_ACTIONS.map(({ action, label, historyTitle }) => (
+              <Button
+                key={action}
+                variant="secondary"
+                size="sm"
+                loading={runningAction === action}
+                disabled={!summarizerText.trim() || runningAction !== null}
+                onClick={() => handleSummarizerAction(action, historyTitle)}
+              >
+                {label}
+              </Button>
+            ))}
           </div>
+
+          {summarizerError && (
+            <p className="mt-3 font-sans text-sm text-danger">{summarizerError}</p>
+          )}
+
+          {summarizerResult && (
+            <div className="mt-4 whitespace-pre-wrap rounded-[var(--radius-md)] border border-border bg-surface-2 p-3.5 font-sans text-sm text-text">
+              {summarizerResult}
+            </div>
+          )}
         </Card>
 
         <Card>
@@ -78,6 +122,12 @@ export default function DashboardPage() {
                   ? "Uso ilimitado de herramientas."
                   : `${profile.powermoney} usos disponibles.`}
               </p>
+              <Link
+                href="/plan"
+                className="mt-3 inline-block font-sans text-sm text-text underline underline-offset-4"
+              >
+                Gestionar plan
+              </Link>
             </>
           ) : (
             <p className="mt-3 font-sans text-sm text-text-dim">
@@ -86,9 +136,8 @@ export default function DashboardPage() {
           )}
 
           <p className="mt-4 border-t border-border pt-4 font-sans text-sm text-text-dim">
-            El seguimiento de racha, tiempo de estudio y objetivos llega
-            cuando el cuaderno y el calendario empiecen a escribir en
-            Firestore (Fase 5–6).
+            El seguimiento de racha, tiempo de estudio y objetivos todavía no
+            está construido.
           </p>
         </Card>
       </div>

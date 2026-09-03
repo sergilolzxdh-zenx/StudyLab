@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fraunces, Figtree } from "next/font/google";
 import { Toaster } from "sonner";
-import { StarfieldBackground } from "@/components/features/landing/StarfieldBackground";
+import { StarfieldBackgroundLoader } from "@/components/features/landing/StarfieldBackgroundLoader";
+import { ServiceWorkerRegister } from "@/components/pwa/ServiceWorkerRegister";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -19,6 +20,14 @@ export const metadata: Metadata = {
   title: "StudyLab",
   description:
     "StudyLab — tu espacio de estudio: cuaderno, calendario, resumidor, corrector, flashcards y asistente de IA en un solo lugar.",
+  appleWebApp: {
+    title: "StudyLab",
+    statusBarStyle: "black-translucent",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0a0a0b",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -29,7 +38,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col bg-bg text-text">
-        <StarfieldBackground />
+        <StarfieldBackgroundLoader />
+        <ServiceWorkerRegister />
         {children}
         <Toaster
           theme="system"

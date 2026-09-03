@@ -1,0 +1,13 @@
+# Firebase CLI / emulator artifacts
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+.firebase/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env files at the repo root (apps/web has its own .gitignore for its .env*)
+/.env
+/.env.local

@@ -192,7 +192,7 @@ export default function CuadernoPage() {
               className="min-h-[400px] flex-1 resize-none border-0 bg-transparent font-sans text-[15px] leading-relaxed text-text placeholder:text-text-dim focus-visible:outline-none"
             />
 
-            <div className="flex items-center justify-between border-t border-border pt-3">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border pt-3">
               <span className="font-sans text-xs text-text-dim" role="status">
                 {saveStatus === "saving"
                   ? "Guardando…"
@@ -204,7 +204,7 @@ export default function CuadernoPage() {
               </span>
 
               {confirmingDelete ? (
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <span className="font-sans text-sm text-text-dim">¿Eliminar esta nota?</span>
                   <Button size="sm" variant="ghost" onClick={() => setConfirmingDelete(false)}>
                     Cancelar

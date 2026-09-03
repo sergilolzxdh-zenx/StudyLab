@@ -44,19 +44,25 @@ export function Header({ user }: { user: User }) {
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="hidden items-center gap-2 sm:flex">
+          <div className="hidden items-center gap-3 lg:flex">
             <span className="grid h-8 w-8 place-items-center rounded-full bg-surface-2 font-sans text-sm text-text">
               {initial}
             </span>
             <span className="max-w-[10rem] truncate font-sans text-sm text-text-dim">{name}</span>
+            <Link
+              href="/plan"
+              className="font-sans text-sm text-text-dim transition-colors hover:text-text"
+            >
+              Plan
+            </Link>
+            <button
+              type="button"
+              onClick={handleSignOut}
+              className="font-sans text-sm text-text-dim transition-colors hover:text-text"
+            >
+              Cerrar sesión
+            </button>
           </div>
-          <button
-            type="button"
-            onClick={handleSignOut}
-            className="font-sans text-sm text-text-dim transition-colors hover:text-text"
-          >
-            Cerrar sesión
-          </button>
           <button
             type="button"
             aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
@@ -84,6 +90,26 @@ export function Header({ user }: { user: User }) {
               {item.label}
             </NavLink>
           ))}
+          <div className="my-2 border-t border-border" />
+          <div className="flex items-center gap-2 px-3 py-2">
+            <span className="grid h-8 w-8 place-items-center rounded-full bg-surface-2 font-sans text-sm text-text">
+              {initial}
+            </span>
+            <span className="truncate font-sans text-sm text-text-dim">{name}</span>
+          </div>
+          <NavLink href="/plan" active={pathname === "/plan"} onClick={() => setMobileOpen(false)}>
+            Plan
+          </NavLink>
+          <button
+            type="button"
+            onClick={() => {
+              setMobileOpen(false);
+              handleSignOut();
+            }}
+            className="rounded-[var(--radius-sm)] px-3 py-2 text-left font-sans text-sm text-text-dim transition-colors hover:bg-surface-2 hover:text-text"
+          >
+            Cerrar sesión
+          </button>
         </nav>
       )}
     </header>

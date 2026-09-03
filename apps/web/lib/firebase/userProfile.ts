@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 import { doc, getDoc, onSnapshot, serverTimestamp, setDoc, type Timestamp } from "firebase/firestore";
 import type { User } from "firebase/auth";
 import { getDb } from "@/lib/firebase/firestore";
+import { PLAN_POWERMONEY, type Plan } from "@/lib/plans";
 
-export const FREE_PLAN_POWERMONEY = 20;
+export const FREE_PLAN_POWERMONEY = PLAN_POWERMONEY.free;
 
-export type Plan = "free" | "pro" | "premium";
+export type { Plan };
 
 export interface UserProfile {
   name: string;
@@ -16,6 +17,8 @@ export interface UserProfile {
   powermoney: number;
   powermoneyResetAt: Timestamp | null;
   preferences: { language: string; theme: string };
+  stripeCustomerId?: string;
+  stripeSubscriptionId?: string;
   createdAt: Timestamp | null;
   updatedAt: Timestamp | null;
 }

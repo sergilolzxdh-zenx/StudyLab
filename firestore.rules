@@ -16,9 +16,9 @@ service cloud.firestore {
 
       // Bootstrap only: a user may create their OWN profile once, and only
       // with the fixed free-tier defaults. plan/powermoney are never
-      // client-chosen — any upgrade comes from the backend (Stripe webhook
-      // via Cloud Functions using the Admin SDK, which bypasses these rules
-      // entirely) once that phase exists.
+      // client-chosen — any upgrade comes from the backend (the Stripe
+      // webhook at apps/web/app/api/stripe/webhook, using the Admin SDK,
+      // which bypasses these rules entirely).
       allow create: if isOwner(uid)
         && request.resource.data.plan == 'free'
         && request.resource.data.powermoney == 20

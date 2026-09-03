@@ -1,8 +1,10 @@
 import {
   createUserWithEmailAndPassword,
+  GoogleAuthProvider,
   onAuthStateChanged,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut as firebaseSignOut,
   updateProfile,
   type User,
@@ -34,6 +36,13 @@ export async function registerWithEmail(name: string, email: string, password: s
 export async function loginWithEmail(email: string, password: string): Promise<User> {
   const auth = getFirebaseAuth();
   const credential = await signInWithEmailAndPassword(auth, email, password);
+  await ensureUserProfileSafe(credential.user);
+  return credential.user;
+}
+
+export async function signInWithGoogle(): Promise<User> {
+  const auth = getFirebaseAuth();
+  const credential = await signInWithPopup(auth, new GoogleAuthProvider());
   await ensureUserProfileSafe(credential.user);
   return credential.user;
 }
