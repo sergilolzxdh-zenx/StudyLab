@@ -1,0 +1,99 @@
+/*
+  StudyLab design tokens.
+  Monochrome editorial scale — the same grayscale used by the landing
+  starfield (bg #0a0a0b, colorA #ffffff, colorB #a1a1aa, colorC #fafaf9,
+  flame #f5f5f0 / #e4e4e7) so the hero background and the UI read as one
+  coherent system instead of two unrelated palettes.
+*/
+
+:root {
+  /* Color — light (default) */
+  --bg: #fafaf9;
+  --surface: #ffffff;
+  --surface-2: #f5f5f4;
+  --border: #e4e4e7;
+  --text: #171717;
+  --text-dim: #6b7280;
+  --accent: #111111;
+  --accent-contrast: #ffffff;
+  --danger: #dc2626;
+  --success: #16a34a;
+  --warning: #d97706;
+
+  /* Typography scale */
+  --text-display: 3.5rem;
+  --text-h1: 2.5rem;
+  --text-h2: 1.75rem;
+  --text-h3: 1.25rem;
+  --text-body: 1rem;
+  --text-body-sm: 0.875rem;
+  --text-xs: 0.75rem;
+
+  /* Spacing (4px base) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+
+  /* Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 1rem;
+  --radius-full: 999px;
+
+  /* Elevation — kept subtle by design, never decorative */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0a0a0b;
+    --surface: #131316;
+    --surface-2: #1c1c1f;
+    --border: #27272a;
+    --text: #f5f5f0;
+    --text-dim: #a1a1aa;
+    --accent: #f5f5f0;
+    --accent-contrast: #0a0a0b;
+    --danger: #f87171;
+    --success: #4ade80;
+    --warning: #fbbf24;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Manual override, wins in both directions once a theme toggle exists (Phase 4). */
+:root[data-theme="light"] {
+  --bg: #fafaf9;
+  --surface: #ffffff;
+  --surface-2: #f5f5f4;
+  --border: #e4e4e7;
+  --text: #171717;
+  --text-dim: #6b7280;
+  --accent: #111111;
+  --accent-contrast: #ffffff;
+}
+
+:root[data-theme="dark"] {
+  --bg: #0a0a0b;
+  --surface: #131316;
+  --surface-2: #1c1c1f;
+  --border: #27272a;
+  --text: #f5f5f0;
+  --text-dim: #a1a1aa;
+  --accent: #f5f5f0;
+  --accent-contrast: #0a0a0b;
+}
