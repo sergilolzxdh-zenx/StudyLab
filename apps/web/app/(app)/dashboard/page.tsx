@@ -145,11 +145,12 @@ export default function DashboardPage() {
       <div>
         <h2 className="font-display text-lg text-text">Herramientas</h2>
         <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-          {TOOL_NAV_ITEMS.map((item) => (
+          {TOOL_NAV_ITEMS.map((item, i) => (
             <Link
               key={item.href}
               href={item.href}
-              className="rounded-[var(--radius-md)] border border-border bg-surface px-4 py-5 text-center font-sans text-sm text-text transition-colors hover:bg-surface-2"
+              style={{ "--stagger-index": i } as React.CSSProperties}
+              className="stagger-item rounded-[var(--radius-md)] border border-border bg-surface px-4 py-5 text-center font-sans text-sm text-text transition-[background-color,transform] duration-[var(--duration-fast)] ease-[var(--ease-out)] hover:bg-surface-2 active:scale-[0.97]"
             >
               {item.label}
             </Link>

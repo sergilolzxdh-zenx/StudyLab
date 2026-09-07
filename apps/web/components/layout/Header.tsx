@@ -9,6 +9,7 @@ import type { User } from "firebase/auth";
 import { TOOL_NAV_ITEMS } from "@/lib/navigation";
 import { signOut } from "@/lib/firebase/auth";
 import { cn } from "@/lib/utils/cn";
+import { PersonalizationMenu } from "@/components/features/theme/PersonalizationMenu";
 
 export function Header({ user }: { user: User }) {
   const pathname = usePathname();
@@ -63,20 +64,33 @@ export function Header({ user }: { user: User }) {
               Cerrar sesión
             </button>
           </div>
+          <PersonalizationMenu />
           <button
             type="button"
             aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
             aria-expanded={mobileOpen}
             onClick={() => setMobileOpen((v) => !v)}
-            className="grid h-9 w-9 place-items-center rounded-[var(--radius-sm)] border border-border text-text lg:hidden"
+            className="grid h-9 w-9 shrink-0 place-items-center rounded-[var(--radius-sm)] border border-border text-text transition-transform duration-[var(--duration-fast)] ease-[var(--ease-out)] active:scale-[0.94] lg:hidden"
           >
             <span aria-hidden="true">{mobileOpen ? "✕" : "☰"}</span>
           </button>
         </div>
       </div>
 
-      {mobileOpen && (
-        <nav className="flex flex-col gap-1 border-t border-border px-6 py-3 lg:hidden">
+      <nav
+        aria-hidden={!mobileOpen}
+        inert={!mobileOpen}
+        className={cn(
+          "grid overflow-hidden border-t border-border transition-[grid-template-rows] duration-[var(--duration-base)] ease-[var(--ease-out)] lg:hidden",
+          mobileOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+        )}
+      >
+        <div
+          className={cn(
+            "flex min-h-0 flex-col gap-1 px-6 py-3 transition-opacity duration-[var(--duration-fast)] ease-[var(--ease-out)]",
+            mobileOpen ? "opacity-100" : "opacity-0"
+          )}
+        >
           <NavLink href="/dashboard" active={pathname === "/dashboard"} onClick={() => setMobileOpen(false)}>
             Inicio
           </NavLink>
@@ -110,8 +124,8 @@ export function Header({ user }: { user: User }) {
           >
             Cerrar sesión
           </button>
-        </nav>
-      )}
+        </div>
+      </nav>
     </header>
   );
 }

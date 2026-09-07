@@ -119,11 +119,9 @@ export function StarfieldBackground() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    // The palette is fixed-dark by design (see CONFIG below) — it only
-    // makes sense against the app's dark theme, so skip the whole WebGL
-    // scene in light mode rather than showing a broken/mismatched canvas.
-    if (!window.matchMedia("(prefers-color-scheme: dark)").matches) return;
-
+    // Dark-mode/background gating happens one level up in
+    // StarfieldBackgroundLoader (which mounts/unmounts this component), so
+    // by the time this effect runs it's already safe to start the scene.
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const renderer = new THREE.WebGL1Renderer({ canvas, antialias: true });

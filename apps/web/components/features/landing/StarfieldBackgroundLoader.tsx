@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useTheme } from "@/lib/theme/ThemeProvider";
 
 // Three.js + its postprocessing passes are the single heaviest dependency in
 // the app (~450KB). The starfield is decorative and runs on every page, so
@@ -12,5 +13,12 @@ const StarfieldBackground = dynamic(
 );
 
 export function StarfieldBackgroundLoader() {
+  const { resolvedTheme, background } = useTheme();
+
+  // The starfield's palette is fixed-dark by design and the user can opt
+  // into a plain background instead — mounting/unmounting is what actually
+  // starts and stops the WebGL scene (see StarfieldBackground's cleanup).
+  if (resolvedTheme !== "dark" || background !== "starfield") return null;
+
   return <StarfieldBackground />;
 }

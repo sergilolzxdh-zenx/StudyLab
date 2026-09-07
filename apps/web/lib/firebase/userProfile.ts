@@ -16,7 +16,7 @@ export interface UserProfile {
   plan: Plan;
   powermoney: number;
   powermoneyResetAt: Timestamp | null;
-  preferences: { language: string; theme: string };
+  preferences: { language: string; theme: string; background?: string; accent?: string };
   stripeCustomerId?: string;
   stripeSubscriptionId?: string;
   createdAt: Timestamp | null;

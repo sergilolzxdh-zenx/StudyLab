@@ -97,3 +97,28 @@
   --accent: #f5f5f0;
   --accent-contrast: #0a0a0b;
 }
+
+/*
+  Accent color — an optional pop of color on top of the monochrome scale
+  (primary buttons, progress bars, a few highlight surfaces). "mono" is the
+  default and needs no override: it already tracks --text so it stays
+  legible in both themes for free. The other options are fixed saturated
+  values that read fine on either a light or dark --surface, so they don't
+  need their own light/dark split.
+*/
+:root[data-accent="indigo"] {
+  --accent: #4f46e5;
+  --accent-contrast: #ffffff;
+}
+:root[data-accent="emerald"] {
+  --accent: #059669;
+  --accent-contrast: #ffffff;
+}
+:root[data-accent="amber"] {
+  --accent: #d97706;
+  --accent-contrast: #ffffff;
+}
+:root[data-accent="rose"] {
+  --accent: #e11d48;
+  --accent-contrast: #ffffff;
+}

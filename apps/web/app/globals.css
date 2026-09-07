@@ -32,6 +32,24 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
+/* Small entrance stagger for grids/lists — pair with an inline
+   `--stagger-index` custom property per item (see components that use it). */
+@keyframes stagger-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stagger-item {
+  animation: stagger-fade-in 320ms var(--ease-out) backwards;
+  animation-delay: calc(var(--stagger-index, 0) * 40ms);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

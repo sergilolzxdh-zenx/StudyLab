@@ -29,7 +29,7 @@ const sizeClasses: Record<ButtonSize, string> = {
 /** Same visual language as <Button>, for non-<button> elements (e.g. <Link>). */
 export function buttonVariants(variant: ButtonVariant = "primary", size: ButtonSize = "md") {
   return cn(
-    "inline-flex items-center justify-center gap-2 font-medium",
+    "inline-flex items-center justify-center gap-2 font-medium active:scale-[0.97]",
     "transition-[opacity,background-color,transform] duration-[var(--duration-fast)] ease-[var(--ease-out)]",
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-bg focus-visible:ring-text",
     variantClasses[variant],
@@ -48,7 +48,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={disabled || loading}
         aria-busy={loading || undefined}
         className={cn(
-          "inline-flex items-center justify-center gap-2 font-medium",
+          "inline-flex items-center justify-center gap-2 font-medium active:scale-[0.97]",
           "transition-[opacity,background-color,transform] duration-[var(--duration-fast)] ease-[var(--ease-out)]",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-bg focus-visible:ring-text",
           "disabled:opacity-50 disabled:pointer-events-none",
